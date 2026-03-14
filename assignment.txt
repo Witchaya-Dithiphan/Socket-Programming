@@ -1,0 +1,268 @@
+01076116 Computer Networks & 01076117 Computer Networks in Prac ce
+Computer Engineering, KMITL
+
+Socket Programming Assignment:
+UDP-based Reliable File Transfer
+จงเขียน client program และ server program ด้วยภาษา Python เพือใช้ส่งไฟล์จากฝั ง client ไปยังฝั ง server โดย
+กําหนดให้ใช้ UDP เป็ น Transport Layer Protocol ซึงผูเ้ รียนจําเป็ นต้องพัฒนาแนวทางการส่งข้อมูลแบบเชือถือได้
+(Reliable Delivery) ขึนมาเอง
+
+Requirements and Limitations
+1.
+
+โปรแกรมต้องสามารถนําส่งข้อมูลแบบเชือถือได้จาก client process ไปยัง server process เพือให้ฝัง server
+ได้ขอ้ มูลไฟล์ถกู ต้องครบถ้วน ถึงแม้นว่าเครือข่ายทีเชือมต่อจะมีปัญหา packet duplica on หรือ packet loss
+
+2.
+
+โปรแกรมต้องสามารถนําส่ง binary ﬁle ได้
+
+3.
+
+โปรแกรมต้องรองรับการระบุหมายเลข IP address และ port ของ server ผ่าน command-line arguments
+
+4.
+
+โปรแกรมต้องสามารถทํางานได้บนระบบปฏิบตั ิการ Linux
+
+5.
+
+โปรแกรมต้องพัฒนาด้วยภาษา Python เวอร์ชนั 3.8+ หรือเวอร์ชนสู
+ั งกว่าเท่านัน
+
+6.
+
+โปรแกรมต้องสามารถทํางานได้จาก source ﬁles ทีผูเ้ รียนพัฒนา โดยไม่จาํ เป็ นต้อง download หรือติดตัง
+package หรือ so ware อืนใดเพิมเติมนอกเหนือจาก libraries หรือ modules ทีมีให้อยู่แล้วจากการติดตัง
+
+ตัวแปลภาษา Python มาตรฐานบนระบบปฏิบัติการ Linux
+7.
+
+ในการทํางานของโปรแกรมจะต้องใช้เพียง User Datagram Protocol เป็ น Transport Layer Protocol
+เท่านัน
+
+8.
+
+ในการทํางานของโปรแกรมฝั ง server เพือรับไฟล์ในแต่ละครัง จะต้องใช้ socket เพียง socket เดียวเท่านัน
+
+9.
+
+จํานวน source ﬁles ทังหมดของโปรแกรมรวมทังฝัง client และ ฝัง server แล้ว ต้องมีจาํ นวนไม่เกิน 5 ไฟล์
+
+10. จํานวนบรรทัดของ code จาก source ﬁles ทีผูเ้ รียนพัฒนารวมกันทุกไฟล์ ต้องมีจาํ นวนไม่เกิน 2000 บรรทัด
+
+Page 1 of 4
+
+01076116 Computer Networks & 01076117 Computer Networks in Prac ce
+Computer Engineering, KMITL
+
+Program Usage
+1.
+
+ไฟล์สาํ หรับเริมการทํางานของโปรแกรมฝั ง server ให้ตงชื
+ั อว่า “ur _server.py” กําหนดให้ใช้คาํ สังต่อไปนีใน
+การเริมการทํางานของโปรแกรมฝั ง server โดยหลังจากทีทํางานแล้ว จะต้องไม่มีการรับ keyboard input ใดๆ
+เพิมอีก
+
+python urft_server.py <server_ip> <server_port>
+
+-
+
+<server_ip> คือ หมายเลข IP address ที socket ของ server process ใช้งาน
+
+-
+
+<server_port> คือ หมายเลข port ที socket ของ server process ใช้งาน
+
+2.
+
+ไฟล์สาํ หรับเริมการทํางานของโปรแกรมฝั ง client ให้ตงชื
+ั อว่า “ur _client.py” กําหนดให้ใช้คาํ สังต่อไปนีใน
+การเริมการทํางานของโปรแกรมฝั ง client โดยหลังจากทีทํางานแล้ว จะต้องไม่มีการรับ keyboard input ใดๆ
+เพิมอีก
+
+python urft_client.py <file_path> <server_ip> <server_port>
+
+-
+
+<ﬁle_path> คือ path ของไฟล์ที client process ต้องการส่งให้ server process
+
+-
+
+<server_ip> คือ หมายเลข IP address ที socket ของ server process ใช้งาน
+
+-
+
+<server_port> คือ หมายเลข port ที socket ของ server process ใช้งาน
+
+3.
+
+หลังจากทีเริมทํางาน ฝัง server จะเป็ นฝ่ ายรอฝั ง client ติดต่อและส่งข้อมูลไฟล์มาให้ โดยฝัง client จะต้อง
+แจ้งชือไฟล์ให้ฝัง server ทราบก่อนส่งข้อมูลในไฟล์ เพือให้ฝัง server บันทึกข้อมูลทีได้รบั ลงในไฟล์ตามชือที
+client แจ้ง
+
+4.
+
+กําหนดให้การทํางานของโปรแกรมฝั ง server ในแต่ละครัง รับการติดต่อจาก client เพียงรายเดียว
+
+5.
+
+หลังจากโปรแกรมฝั ง client ส่งไฟล์ตามระบุสาํ เร็จ จะต้องจบการทํางานและกลับมาที shell prompt โดยไม่มี
+error ใดๆ ในทํานองเดียวกัน หลังจากโปรแกรมฝัง server รับข้อมูลและเขียนไฟล์เสร็จสิน จะต้องจบการ
+
+ทํางานและกลับมาที shell prompt โดยไม่มี error ใดๆ
+
+Page 2 of 4
+
+01076116 Computer Networks & 01076117 Computer Networks in Prac ce
+Computer Engineering, KMITL
+
+Program Evaluation and Marking
+การทดสอบการทํางานจะใช้วิธีการนําโปรแกรมฝั ง client และ server ไปทํางานคนละ host ซึงอยูก่ นั คนละ subnet
+โดยมี router ทําหน้าทีเชือมต่อและส่งต่อ packet ระหว่าง subnets นอกจากนี router จะยังทําหน้าทีเลียนแบบสภาพ
+เครือข่ายด้านต่างๆ ทัง network latency, packet loss, packet duplica on และ packet re-ordering โดยมีการ
+เชือมต่อดังภาพ
+
+การเลียนแบบสภาพเครือข่ายด้านรวมถึงเงือนไขในการทดสอบอืนๆ และคะแนน เป็ นไปตามตารางต่อไปนี โดยผูเ้ รียนจะมี
+สิทธิได้คะแนนจากการทดสอบหมายเลขใดนัน โปรแกรมของผูเ้ รียนจําเป็ นต้องผ่านการทดสอบหมายเลขตํากว่าทัง
+หมดแล้วเท่านัน เช่น ผูเ้ รียนมีสิทธิจะได้คะแนนจากการทดสอบที 4 ก็ตอ่ เมือผ่านการทดสอบที 1, 2 และ 3 แล้วเท่านัน
+No.
+1
+2
+
+File
+Size
+1 MiB
+1 MiB
+
+Transport
+Protocol
+UDP
+UDP
+
+RTT
+(ms)
+10
+10
+
+3
+4
+
+1 MiB
+1 MiB
+
+UDP
+UDP
+
+10
+10
+
+5
+6
+7
+
+1 MiB
+1 MiB
+1 MiB
+
+UDP
+UDP
+UDP
+
+10
+250
+250
+
+8
+
+5 MiB
+
+UDP
+
+100
+
+Client-to-Server
+Link Condi on
+Packet Duplica on:
+2%
+Packet Loss: 2%
+Packet Re-ordering:
+2%
+Packet Loss: 5%
+
+Page 3 of 4
+
+Server-to-Client
+Link Condi on
+-
+
+Time Limit
+(seconds)
+30
+30
+
+Points
+
+Packet Duplica on:
+5%
+Packet Loss: 5%
+-
+
+30
+30
+
+3
+3
+
+30
+60
+90
+
+2
+2
+2
+
+Packet Loss: 2%
+
+30
+
+2
+
+3
+3
+
+01076116 Computer Networks & 01076117 Computer Networks in Prac ce
+Computer Engineering, KMITL
+
+Submission
+
+
+ให้ส่ง source ﬁles ทังหมดใน Assignment ทีผูส้ อนประกาศไว้บน Microso Teams ของรายวิชาภายใน
+เวลาทีกําหนดไว้ โดยให้ส่ง source ﬁles ภาษา Python ทังหมดใน Assignment โดยตรงแบบไม่ตอ้ งมีการบีบ
+อัดใดๆ
+
+
+
+ให้ตงชื
+ั อไฟล์โปรแกรมฝั ง client และฝัง server ตามชือทีกําหนดไว้ในวิธีใช้งาน ส่วนไฟล์อืนๆ ทีผูเ้ รียนมีการใช้
+งานเพิมเติมสามารถตังชืออย่างไรก็ได้ แต่ตอ้ งสามารถอ้างอิงหรือใช้งานได้บนระบบปฏิบตั ิการ Linux
+
+
+
+การตรวจจะเป็ นการใช้ script เพือทําการตรวจโดยระบบอัตโนมัติตาม test cases ทีได้ระบุไว้ โดยจะตรวจสอบ
+จากขนาดและค่า md5sum ของไฟล์ทส่ี งสําเร็จว่ามีค่าตรงกับค่าของไฟล์ตน้ ฉบับหรือไม่
+
+
+
+เนืองจากเป็ นการใช้ระบบอัตโนมัติในการตรวจ จึงขอให้ผเู้ รียนปฏิบตั ิตามคําอธิบายการส่งงานอย่างเคร่งครัด
+ข้อผิดพลาดใดๆ ทีเกิดจากการทีผูเ้ รียนไม่ปฏิบตั ิตามข้อกําหนดการส่ง และส่งผลให้ระบบอัตโนมัติไม่สามารถ
+ตรวจงานได้ จะถือว่าส่งผลให้คะแนนส่วนนันของผูเ้ รียน มีคะแนนเป็ นศูนย์
+
+
+
+ผูเ้ รียนสามารถนําโปรแกรมทีพัฒนามาแล้วมาทดสอบได้ในช่วงคาบรายวิชาปฏิบตั ิ โดยผูส้ อนจะทดลองนํา
+โปรแกรมทีผูเ้ รียนพัฒนาไปทดลองทํางานบนระบบ virtual machines ทีผูส้ อนเตรียมไว้
+
+Page 4 of 4
+
+
